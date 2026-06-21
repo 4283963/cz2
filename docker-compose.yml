@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: jade_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: jade
+      POSTGRES_PASSWORD: jade
+      POSTGRES_DB: jade_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - jade_pgdata:/var/lib/postgresql/data
+
+volumes:
+  jade_pgdata:

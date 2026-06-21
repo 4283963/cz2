@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react'
 import JadeForm from './components/JadeForm'
 import JadeList from './components/JadeList'
-import { fetchCategories } from './api'
+import JadeDetail from './components/JadeDetail'
+import { fetchCategories, fetchForms } from './api'
 
 export default function App() {
   const [tab, setTab] = useState('form')
   const [categories, setCategories] = useState(['切米蓝', '墨碧'])
+  const [forms, setForms] = useState(['手串', '料子'])
   const [refreshKey, setRefreshKey] = useState(0)
+  const [detailId, setDetailId] = useState(null)
 
   useEffect(() => {
-    fetchCategories()
-      .then(setCategories)
-      .catch(() => setCategories(['切米蓝', '墨碧']))
+    fetchCategories().then(setCategories).catch(() => {})
+    fetchForms().then(setForms).catch(() => {})
   }, [])
 
   const handleCreated = () => {
@@ -44,17 +46,17 @@ export default function App() {
           <section className="panel">
             <div className="panel-head">
               <h2>藏品录入</h2>
-              <p className="panel-sub">填写玉石基本信息与质地鉴定数据，两部分将一并保存。</p>
+              <p className="panel-sub">填写玉石基本信息与质地鉴定数据，系统会自动计算综合评分与等级。</p>
             </div>
-            <JadeForm categories={categories} onCreated={handleCreated} />
+            <JadeForm categories={categories} forms={forms} onCreated={handleCreated} />
           </section>
         ) : (
           <section className="panel">
             <div className="panel-head">
               <h2>藏品列表</h2>
-              <p className="panel-sub">可按品类筛选切米蓝或墨碧藏品。</p>
+              <p className="panel-sub">可按品类筛选切米蓝或墨碧藏品，点击「详情」查看并打印质地卡片。</p>
             </div>
-            <JadeList refreshKey={refreshKey} />
+            <JadeList refreshKey={refreshKey} onOpenDetail={setDetailId} />
           </section>
         )}
       </main>
@@ -62,6 +64,10 @@ export default function App() {
       <footer className="app-footer">
         和田玉藏品管理系统 · FastAPI + PostgreSQL + React
       </footer>
+
+      {detailId !== null && (
+        <JadeDetail jadeId={detailId} onClose={() => setDetailId(null)} />
+      )}
     </div>
   )
 }

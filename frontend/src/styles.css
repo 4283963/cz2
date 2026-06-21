@@ -307,7 +307,7 @@ body {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
-  min-width: 820px;
+  min-width: 1040px;
 }
 
 .jade-table thead th {
@@ -369,6 +369,205 @@ body {
 }
 
 .link-danger:hover { text-decoration: underline; }
+
+.link-primary {
+  border: 0;
+  background: transparent;
+  color: var(--jade-soft);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 0;
+}
+
+.link-primary:hover { text-decoration: underline; }
+
+.row-actions {
+  display: inline-flex;
+  gap: 14px;
+}
+
+/* ---------- Grade tags ---------- */
+.grade-tag {
+  display: inline-block;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 2px;
+}
+
+.grade-special {
+  background: rgba(201, 168, 106, 0.18);
+  color: var(--gold);
+  box-shadow: inset 0 0 0 1px rgba(201, 168, 106, 0.5);
+}
+
+.grade-first {
+  background: rgba(47, 191, 149, 0.16);
+  color: var(--jade-soft);
+  box-shadow: inset 0 0 0 1px rgba(127, 227, 192, 0.45);
+}
+
+.grade-second {
+  background: rgba(138, 168, 156, 0.14);
+  color: var(--muted);
+  box-shadow: inset 0 0 0 1px rgba(138, 168, 156, 0.4);
+}
+
+/* ---------- Detail modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 12, 10, 0.72);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 50;
+  animation: fade 0.2s ease;
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #16261f, #0f1d18);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  animation: rise 0.3s ease both;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  border-bottom: 1px solid var(--line);
+}
+
+.modal-head h2 {
+  margin: 0;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+
+.modal-close {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  transition: background 0.18s, color 0.18s;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--cream);
+}
+
+.detail-body { padding: 24px 26px 28px; }
+
+.grade-banner {
+  text-align: center;
+  background: linear-gradient(180deg, #0a3d31, #06251e);
+  border: 1px solid rgba(127, 227, 192, 0.3);
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 22px;
+}
+
+.grade-banner-label {
+  font-size: 12px;
+  color: var(--jade-soft);
+  letter-spacing: 4px;
+}
+
+.grade-banner-val {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  margin: 6px 0;
+}
+
+.grade-banner-val.grade-special { color: var(--gold); }
+.grade-banner-val.grade-first { color: var(--jade-soft); }
+.grade-banner-val.grade-second { color: var(--muted); }
+
+.grade-banner-score {
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 18px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.detail-wide { grid-column: 1 / -1; }
+
+.detail-item .k {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.detail-item .v {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--cream);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn-ghost {
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 13px 26px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.05); }
+
+.print-hint {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
 
 .app-footer {
   text-align: center;

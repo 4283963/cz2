@@ -29,6 +29,7 @@ def get_jades(
 def create_jade(db: Session, jade_in: schemas.JadeBasicCreate) -> models.JadeBasic:
     jade = models.JadeBasic(
         category=jade_in.category,
+        form=jade_in.form,
         weight=jade_in.weight,
         purchase_price=jade_in.purchase_price,
         note=jade_in.note,

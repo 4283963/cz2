@@ -3,9 +3,10 @@ import { createJade } from '../api'
 
 const FINENESS_OPTIONS = ['极细腻', '细腻', '一般', '偏粗']
 
-export default function JadeForm({ categories, onCreated }) {
+export default function JadeForm({ categories, forms, onCreated }) {
   const [form, setForm] = useState({
     category: categories[0] || '切米蓝',
+    form: forms[0] || '手串',
     weight: '',
     purchase_price: '',
     note: '',
@@ -15,6 +16,8 @@ export default function JadeForm({ categories, onCreated }) {
   })
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState(null)
+
+  const isBracelet = form.form === '手串'
 
   const set = (field) => (e) => {
     const value = e.target.value
@@ -28,13 +31,14 @@ export default function JadeForm({ categories, onCreated }) {
     try {
       const payload = {
         category: form.category,
+        form: form.form,
         weight: Number(form.weight),
         purchase_price: Number(form.purchase_price),
         note: form.note || null,
         quality: {
           transparency: Number(form.transparency),
           fineness: form.fineness,
-          bead_count: form.bead_count === '' ? null : Number(form.bead_count),
+          bead_count: isBracelet ? (form.bead_count === '' ? null : Number(form.bead_count)) : null,
         },
       }
       await createJade(payload)
@@ -67,6 +71,14 @@ export default function JadeForm({ categories, onCreated }) {
           </select>
         </label>
         <label className="field">
+          <span>形态</span>
+          <select value={form.form} onChange={set('form')}>
+            {forms.map((f) => (
+              <option key={f} value={f}>{f}</option>
+            ))}
+          </select>
+        </label>
+        <label className="field">
           <span>克重 (g)</span>
           <input type="number" step="0.01" min="0" required value={form.weight} onChange={set('weight')} placeholder="如 38.5" />
         </label>
@@ -94,10 +106,12 @@ export default function JadeForm({ categories, onCreated }) {
             ))}
           </select>
         </label>
-        <label className="field">
-          <span>珠子数量</span>
-          <input type="number" min="0" value={form.bead_count} onChange={set('bead_count')} placeholder="手串填，料子可空" />
-        </label>
+        {isBracelet && (
+          <label className="field">
+            <span>珠子数量</span>
+            <input type="number" min="0" required value={form.bead_count} onChange={set('bead_count')} placeholder="如 18" />
+          </label>
+        )}
       </div>
 
       <div className="form-actions">

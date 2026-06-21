@@ -27,6 +27,11 @@ def list_categories():
     return [c.value for c in JadeCategory]
 
 
+@app.get("/api/forms", response_model=List[str])
+def list_forms():
+    return [f.value for f in JadeForm]
+
+
 @app.post("/api/jades", response_model=schemas.JadeBasicOut, status_code=status.HTTP_201_CREATED)
 def create_jade(jade_in: schemas.JadeBasicCreate, db: Session = Depends(get_db)):
     return crud.create_jade(db, jade_in)

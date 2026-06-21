@@ -1,9 +1,11 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional, Self
+from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validator, model_validator
+from typing_extensions import Self
 
+from grading import compute_grade, compute_score
 from models import JadeCategory, JadeForm
 
 
@@ -24,6 +26,16 @@ class JadeQualityOut(JadeQualityBase):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+    @computed_field
+    @property
+    def score(self) -> int:
+        return compute_score(self.transparency, self.fineness)
+
+    @computed_field
+    @property
+    def grade(self) -> str:
+        return compute_grade(self.transparency, self.fineness)
 
 
 class JadeBasicBase(BaseModel):

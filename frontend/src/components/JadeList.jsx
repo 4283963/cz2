@@ -7,6 +7,12 @@ const FILTERS = [
   { label: '墨碧', value: '墨碧' },
 ]
 
+const GRADE_CLASS = {
+  特级: 'grade-special',
+  一级: 'grade-first',
+  二级: 'grade-second',
+}
+
 function fmt(n) {
   if (n === null || n === undefined) return '—'
   return Number(n).toFixed(2)
@@ -18,7 +24,7 @@ function formatDate(s) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
-export default function JadeList({ refreshKey }) {
+export default function JadeList({ refreshKey, onOpenDetail }) {
   const [jades, setJades] = useState([])
   const [filter, setFilter] = useState('')
   const [loading, setLoading] = useState(false)
@@ -83,12 +89,14 @@ export default function JadeList({ refreshKey }) {
               <tr>
                 <th>编号</th>
                 <th>品类</th>
+                <th>形态</th>
                 <th>克重(g)</th>
                 <th>买入价(元)</th>
                 <th>透光度</th>
                 <th>细度</th>
+                <th>评分</th>
+                <th>等级</th>
                 <th>珠子数</th>
-                <th>备注</th>
                 <th>录入日期</th>
                 <th>操作</th>
               </tr>
@@ -102,14 +110,23 @@ export default function JadeList({ refreshKey }) {
                       {j.category}
                     </span>
                   </td>
+                  <td>{j.form}</td>
                   <td>{fmt(j.weight)}</td>
                   <td>¥{fmt(j.purchase_price)}</td>
                   <td>{j.quality ? `${j.quality.transparency}/10` : '—'}</td>
                   <td>{j.quality?.fineness || '—'}</td>
-                  <td>{j.quality?.bead_count ?? '—'}</td>
-                  <td className="muted">{j.note || '—'}</td>
-                  <td className="muted">{formatDate(j.created_at)}</td>
+                  <td>{j.quality?.score ?? '—'}</td>
                   <td>
+                    {j.quality?.grade && (
+                      <span className={`grade-tag ${GRADE_CLASS[j.quality.grade] || ''}`}>
+                        {j.quality.grade}
+                      </span>
+                    )}
+                  </td>
+                  <td>{j.quality?.bead_count ?? '—'}</td>
+                  <td className="muted">{formatDate(j.created_at)}</td>
+                  <td className="row-actions">
+                    <button className="link-primary" onClick={() => onOpenDetail?.(j.id)}>详情</button>
                     <button className="link-danger" onClick={() => handleDelete(j.id)}>删除</button>
                   </td>
                 </tr>

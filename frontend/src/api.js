@@ -17,9 +17,17 @@ export async function fetchCategories() {
   return request('/categories')
 }
 
+export async function fetchForms() {
+  return request('/forms')
+}
+
 export async function fetchJades(category) {
   const qs = category ? `?category=${encodeURIComponent(category)}` : ''
   return request(`/jades${qs}`)
+}
+
+export async function fetchJade(id) {
+  return request(`/jades/${id}`)
 }
 
 export async function createJade(payload) {

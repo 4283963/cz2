@@ -12,6 +12,11 @@ class JadeCategory(str, enum.Enum):
     mobi = "墨碧"
 
 
+class JadeForm(str, enum.Enum):
+    bracelet = "手串"
+    material = "料子"
+
+
 class JadeBasic(Base):
     __tablename__ = "jade_basic"
 
@@ -20,6 +25,11 @@ class JadeBasic(Base):
         Enum(JadeCategory, name="jade_category", values_callable=lambda e: [m.value for m in e]),
         nullable=False,
         comment="品类",
+    )
+    form = Column(
+        Enum(JadeForm, name="jade_form", values_callable=lambda e: [m.value for m in e]),
+        nullable=False,
+        comment="形态",
     )
     weight = Column(Numeric(10, 2), nullable=False, comment="克重(g)")
     purchase_price = Column(Numeric(12, 2), nullable=False, comment="买入价(元)")

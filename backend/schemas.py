@@ -1,10 +1,10 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
+from typing import Optional, Self
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-from models import JadeCategory
+from models import JadeCategory, JadeForm
 
 
 class JadeQualityBase(BaseModel):
@@ -28,6 +28,7 @@ class JadeQualityOut(JadeQualityBase):
 
 class JadeBasicBase(BaseModel):
     category: JadeCategory
+    form: JadeForm
     weight: Decimal = Field(..., gt=0, description="克重(g)")
     purchase_price: Decimal = Field(..., ge=0, description="买入价(元)")
     note: Optional[str] = Field(None, max_length=255)
@@ -36,9 +37,18 @@ class JadeBasicBase(BaseModel):
 class JadeBasicCreate(JadeBasicBase):
     quality: JadeQualityCreate
 
+    @model_validator(mode="after")
+    def check_bead_count(self) -> Self:
+        if self.form == JadeForm.bracelet and (self.quality is None or self.quality.bead_count is None):
+            raise ValueError("手串必须填写珠子数量")
+        if self.form == JadeForm.material and self.quality and self.quality.bead_count is not None:
+            raise ValueError("料子不需要填写珠子数量")
+        return self
+
 
 class JadeBasicUpdate(BaseModel):
     category: Optional[JadeCategory] = None
+    form: Optional[JadeForm] = None
     weight: Optional[Decimal] = Field(None, gt=0)
     purchase_price: Optional[Decimal] = Field(None, ge=0)
     note: Optional[str] = Field(None, max_length=255)

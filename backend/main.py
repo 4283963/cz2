@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 import crud
 import schemas
 from database import engine, Base, get_db
-from models import JadeCategory
+from models import JadeCategory, JadeForm
 
 Base.metadata.create_all(bind=engine)
 
